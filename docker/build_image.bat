@@ -1,9 +1,5 @@
 
 @ECHO OFF
 
-docker build -t "ros2_tutorial" ^
-    --build-arg myuser="%USERNAME%" ^
-    --build-arg myuid=11011 ^
-    --build-arg mygroup="%USERNAME%" ^
-    --build-arg mygid=11011 ^
+docker build -t "rafa606/ros2-tutorial" ^
     --no-cache -f ./image.dockerfile .
