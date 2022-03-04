@@ -1,6 +1,7 @@
 # ROS2 node
 
 A ROS node is a POSIX process with the minimal ROS functionalities that makes a ROS node.
+See [here](http://design.ros2.org/articles/node_lifecycle.html) to deepen on ros nodes.
 The API to instantiate these minimal inside a posix process is caled ROS Client library or `rcl`.
 In C++ a node is defined [here](https://github.com/ros2/rclcpp/blob/galactic/rclcpp/include/rclcpp/node.hpp) with macros-based definitions given [here](https://github.com/ros2/rclcpp/blob/1037822a63330495dcf0de5e8f20544375a5f116/rclcpp/include/rclcpp/macros.hpp).
 In ROS2 it is possible to compose seveeral nodes in a single process [see here](https://docs.ros.org/en/galactic/Tutorials/Composition.html).
