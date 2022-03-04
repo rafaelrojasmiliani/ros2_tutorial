@@ -21,7 +21,7 @@ In ROS2 it is possible to compose seveeral nodes in a single process [see here](
     - `Node::create_client`
     - `Client::async_send_request`
 
-- **Live cycle**
+- **Live cycle** [see here](https://github.com/ros2/demos/blob/master/lifecycle/README.rst)
     - `rclcpp::ok` **contex dependent**
     - `rclcpp::shutdown`
     - `rclcpp::spin_until_future_complete`
