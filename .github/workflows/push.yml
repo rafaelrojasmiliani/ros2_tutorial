@@ -11,7 +11,8 @@ jobs:
         uses: tj-actions/verify-changed-files@v5.5
         id: docker_image_changed
         with:
-          files: docker/image.dockerfile
+          files: |
+            docker/image.dockerfile
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
