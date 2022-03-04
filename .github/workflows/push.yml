@@ -10,6 +10,11 @@ jobs:
       - name: Get changed files using defaults
         id: changed-files
         uses: tj-actions/changed-files@v17.2
+      - name: List all added files
+        run: |
+          for file in ${{ steps.changed-files.outputs.added_files }}; do
+            echo "$file was added"
+          done
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
