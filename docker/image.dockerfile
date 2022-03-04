@@ -13,7 +13,7 @@ RUN apt-get update \
     && install -d -m 0755 -o ros2user -g 11011 /home/ros2user \
     && usermod -aG sudo,video ros2user \
     && echo "ros2user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
-    && echo "umask 000" >> /etc/bash.bashrc
+    && echo "umask 000" >> /etc/bash.bashrc \
     && echo "source /opt/ros/galactic/setup.bash" >> /etc/bash.bashrc
 
 WORKDIR /workspace
