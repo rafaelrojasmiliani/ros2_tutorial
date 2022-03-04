@@ -26,11 +26,12 @@ main(){
     mygid=$(id -g $USER)
     mygroup=$(id -g -n $USER)
     myuser="$USER"
+    docker pull rafa606/ros2-tutorial
     docker run -it --rm \
         ${DOCKER_VIDEO_OPTIONS} \
         --volume $(pwd)/../:/workspace/src/tutorial: \
         --entrypoint="/bin/bash" \
-        "rafa606/ros2-tutorial" -c "addgroup --gid ${mygid} ${mygroup} --force-badname;  adduser --home /workspace/src/tutorial --gecos \"\" --disabled-password  --uid ${myuid} --gid ${mygid} ${myuser} --force-badname ; su - ${myuser} -c bash"
+        "rafa606/ros2-tutorial" -c "addgroup --gid ${mygid} ${mygroup} --force-badname;  adduser --gecos \"\" --disabled-password  --uid ${myuid} --gid ${mygid} ${myuser} --force-badname ; usermod -a -G video ${myuser}; echo ${myuser} ALL=\(ALL\) NOPASSWD:ALL >> /etc/sudoers; sudo -Eu ${myuser} -c bash"
 }
 
 main
