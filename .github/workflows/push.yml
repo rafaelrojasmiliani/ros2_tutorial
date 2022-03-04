@@ -7,22 +7,19 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@master
-      - name: Verify Dockerfile changed
-        uses: tj-actions/verify-changed-files@v5.5
-        id: docker_image_changed
-        with:
-          files: |
-            docker/image.dockerfile
+      - name: Get changed files using defaults
+        id: changed-files
+        uses: tj-actions/changed-files@v17.2
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-        if: steps.docker_image_changed.outputs.files_changed == 'true'
+        if: contains(steps.changed-files.outputs.modified_files, 'docker/image.dockerfile')
       - name: build and push to docker vim with latex
         uses: docker/build-push-action@v2
         with:
           tags: rafa606/ros2-tutorial
           file: docker/image.dockerfile
           push: true
-        if: steps.docker_image_changed.outputs.files_changed == 'true'
+        if: contains(steps.changed-files.outputs.modified_files, 'docker/image.dockerfile')
