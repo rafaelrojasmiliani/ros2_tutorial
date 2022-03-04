@@ -15,4 +15,6 @@ RUN apt-get update \
     && echo "$ros2user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
     && echo "umask 000" >> /etc/bash.bashrc
 
+
+
 WORKDIR /workspace
