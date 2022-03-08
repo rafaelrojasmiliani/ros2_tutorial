@@ -20,3 +20,11 @@ This means that `colcon` command line tool to build and `ament` is the cmake/pyt
 Sourcing the `local_setup` of the overlay will only add the packages available in the overlay to your environment. setup sources the overlay as well as the underlay it was created in, allowing you to utilize both workspaces.
 
 So, sourcing your main ROS 2 installation’s setup and then the `dev_ws` overlay's `local_setup`, like you just did, is the same as just sourcing `dev_ws`'s setup, because that includes the environment of the underlay it was created in.
+
+
+# Command line tool
+
+- [ros2](https://github.com/ros2/ros2cli/blob/f93e41a6ce6b968d28e5f859e12eca24cca42665/ros2cli/setup.py#L61) definiton of ros2 command line script at insalltion level
+- [cli](https://github.com/ros2/ros2cli/blob/master/ros2cli/ros2cli/cli.py)
+- [ros2launch](https://github.com/ros2/launch_ros/tree/galactic/ros2launch) [here](https://github.com/ros2/launch_ros.git)
+

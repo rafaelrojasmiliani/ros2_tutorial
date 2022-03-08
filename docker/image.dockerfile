@@ -8,11 +8,6 @@ RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
         ros-galactic-turtlesim sudo \
     && rm -rf /var/lib/apt/lists/* \
-    && groupadd -g 11011 ros2user \
-    && useradd -l -u 11011 -g ros2user ros2user \
-    && install -d -m 0755 -o ros2user -g 11011 /home/ros2user \
-    && usermod -aG sudo,video ros2user \
-    && echo "ros2user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
     && echo "umask 000" >> /etc/bash.bashrc \
     && echo "source /opt/ros/galactic/setup.bash" >> /etc/bash.bashrc
 
