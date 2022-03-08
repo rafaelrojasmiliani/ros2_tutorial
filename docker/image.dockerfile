@@ -15,6 +15,7 @@ RUN apt-get update \
         ros-galactic-rviz2 \
         ros-galactic-xacro \
         ros-galactic-hardware-interface \
+        ros-galactic-gazebo-ros2-control \
     && rm -rf /var/lib/apt/lists/* \
     && echo "umask 000" >> /etc/bash.bashrc \
     && echo "source /opt/ros/galactic/setup.bash" >> /etc/bash.bashrc
