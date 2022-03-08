@@ -14,6 +14,9 @@
 
 - [`ResoureceStorate`](https://github.com/ros-controls/ros2_control/blob/500233ac3d7f337881922ae7a96abd0a87b70dfa/hardware_interface/src/resource_manager.cpp#L38) 
 
+- **Concetp of Handle** 
+    - [**`StateInterface`**](https://github.com/ros-controls/ros2_control/blob/500233ac3d7f337881922ae7a96abd0a87b70dfa/hardware_interface/include/hardware_interface/handle.hpp#L107)
+
 - **`Actuator`** [declared here](https://github.com/ros-controls/ros2_control/blob/500233ac3d7f337881922ae7a96abd0a87b70dfa/hardware_interface/include/hardware_interface/actuator.hpp#L32) 
     - **`ActuatorInterface`** [declared here](https://github.com/ros-controls/ros2_control/blob/500233ac3d7f337881922ae7a96abd0a87b70dfa/hardware_interface/include/hardware_interface/actuator_interface.hpp#L66)
 
