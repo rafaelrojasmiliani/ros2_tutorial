@@ -1,3 +1,6 @@
 [submodule "03_control/ros2_control_demos"]
 	path = 04_control/ros2_control_demos
 	url = https://github.com/ros-controls/ros2_control_demos
+[submodule "00_demos"]
+	path = 00_demos
+	url = https://github.com/ros2/demos.git

@@ -9,6 +9,7 @@ In ROS2 it is possible to compose seveeral nodes in a single process [see here](
 - `rclcpp::init` [declared here](https://github.com/ros2/rclcpp/blob/16914e31a15417d5751c4cb611f591bbaa458eca/rclcpp/include/rclcpp/context.hpp#L128) [defined here](https://github.com/ros2/rclcpp/blob/54c2a8ac5bf14b9353765e94db5042630b710a75/rclcpp/src/rclcpp/utilities.cpp#L34) initialize the "node context".
 - **Node Creation**. Nodes inherit from `enable_shared_from_this`, so they provide safety method to generare share pointers to node's instances. They also [define](https://github.com/ros2/rclcpp/blob/54c2a8ac5bf14b9353765e94db5042630b710a75/rclcpp/src/rclcpp/utilities.cpp#L34) useful static factory methods such as `Node::make_shared`, which calls a `std::make_shared` with the correct arguments to instantiate a new node.
 
+- [managed nodes](https://answers.ros.org/question/301844/ros2-node-vs-managed-node/) [more](https://answers.ros.org/question/341887/recommendation-to-manage-multiple-lifecycle-nodes/) 
 # Interfaces
 
 [tutorial](https://docs.ros.org/en/galactic/Concepts/About-ROS-Interfaces.html).
