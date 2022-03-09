@@ -21,6 +21,11 @@ RUN apt-get update \
         ros-foxy-ros-testing \
         ros-foxy-rttest \
         ros-foxy-tlsf-cpp \
+        ros-foxy-ament-lint \
+        ros-foxy-rosidl-default-generators \
+        ros-foxy-ament-lint-auto \
+        ros-foxy-ament-cmake-flake8 \
+        ros-foxy-ament-pep257 \
         libopencv-dev \
     && rm -rf /var/lib/apt/lists/* \
     && echo "umask 000" >> /etc/bash.bashrc \
