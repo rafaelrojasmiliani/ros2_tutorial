@@ -9,8 +9,8 @@
 	- Systems
 	- Nodes Lifecycle ?
 	- Resources
-- ROS2 Harware abstraction layer, Hardware interfaces
-- ROS2 Control
+- ROS2 Harware abstraction layer, Hardware interfaces **main focus**
+- ROS2 Control **overview of avaiable controllers**
 - Command line interface
 - Exercise 1: Write an actuator hardware interface
 - Exercice 2: Write a sensor hardare interface
