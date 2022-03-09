@@ -16,6 +16,12 @@ RUN apt-get update \
         ros-galactic-xacro \
         ros-galactic-hardware-interface \
         ros-galactic-gazebo-ros2-control \
+        ros-galactic-example-interfaces \
+        ros-galactic-rmw-fastrtps-cpp \
+        ros-galactic-ros-testing \
+        ros-galactic-rttest \
+        ros-galactic-tlsf-cpp \
+        libopencv-dev \
     && rm -rf /var/lib/apt/lists/* \
     && echo "umask 000" >> /etc/bash.bashrc \
     && echo "source /opt/ros/galactic/setup.bash" >> /etc/bash.bashrc
