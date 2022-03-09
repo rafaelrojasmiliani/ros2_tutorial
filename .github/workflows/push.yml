@@ -28,7 +28,7 @@ jobs:
       - name: build and push to docker vim with latex
         uses: docker/build-push-action@v2
         with:
-          tags: rafa606/ros2-tutorial
+          tags: rafa606/ros2-foxy-tutorial
           file: docker/image.dockerfile
           push: true
         if: contains(steps.changed-files.outputs.modified_files, 'docker/image.dockerfile')
