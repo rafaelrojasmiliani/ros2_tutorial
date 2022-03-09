@@ -31,6 +31,7 @@ main(){
         ${DOCKER_VIDEO_OPTIONS} \
         --volume $(pwd)/../:/workspace/src/tutorial: \
         --entrypoint="/bin/bash" \
+        --privileged \
         "rafa606/ros2-tutorial" -c "addgroup --gid ${mygid} ${mygroup} --force-badname;  adduser --gecos \"\" --disabled-password  --uid ${myuid} --gid ${mygid} ${myuser} --force-badname ; usermod -a -G video ${myuser}; echo ${myuser} ALL=\(ALL\) NOPASSWD:ALL >> /etc/sudoers; sudo -EHu ${myuser}  bash"
 }
 
