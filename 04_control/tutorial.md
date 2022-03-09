@@ -1,4 +1,5 @@
 
+- Distribution: Galactic
 - Motivation of ROS control: Robot agnostic controllers
 	- Interoperability problem
 - ROS2 control architecure
@@ -9,7 +10,7 @@
 	- Nodes Lifecycle ?
 	- Resources
 - ROS2 Harware abstraction layer, Hardware interfaces
-- ROS2 Control 
+- ROS2 Control
 - Command line interface
 - Exercise 1: Write an actuator hardware interface
 - Exercice 2: Write a sensor hardare interface

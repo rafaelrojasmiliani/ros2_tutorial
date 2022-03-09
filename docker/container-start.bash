@@ -26,7 +26,7 @@ main(){
     mygid=$(id -g $USER)
     mygroup=$(id -g -n $USER)
     myuser="$USER"
-    docker pull rafa606/ros2-tutorial
+    docker pull rafa606/ros2-galactic-tutorial
     docker run -it --rm \
         ${DOCKER_VIDEO_OPTIONS} \
         --volume $(pwd)/../:/workspace/src/tutorial: \
