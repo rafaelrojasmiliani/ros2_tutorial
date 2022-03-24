@@ -126,32 +126,18 @@ The [`examples_rclcpp_cbg_executor`](https://github.com/ros2/examples/tree/maste
 
 ### Scheduling semantics
 
-If the processing time of the callbacks is shorter than the period with which messages and events occur, the Executor basically processes them in FIFO order. However, if the processing time of some callbacks is longer, messages and events will be queued on the lower layers of the stack. The wait set mechanism reports only very little information about these queues to the Executor. In detail, it only reports whether there are any messages for a certain topic or not. The Executor uses this information to process the messages (including services and actions) in a round-robin fashion - but not in FIFO order. In addition, it prioritizes all timer events over the messages. The following flow diagram visualizes this scheduling semantics.
-../_images/executors_scheduling_semantics.png
+If the processing time of the callbacks is shorter than the period with which messages and events occur, the Executor basically processes them in FIFO order.
+However, if the processing time of some callbacks is longer, messages and events will be queued on the lower layers of the stack.
+The wait set mechanism reports only very little information about these queues to the Executor.
+In detail, it only reports whether there are any messages for a certain topic or not.
+The Executor uses this information to process the messages (including services and actions) in a round-robin fashion - but not in FIFO order.
+In addition, it prioritizes all timer events over the messages.
+The following flow diagram visualizes this scheduling semantics.
 
 This semantics was first described in a paper by Casini et al. at ECRTS 2019.
-Outlook
-
-While the three Executors of rclcpp work well for most applications there are some issues that make them not suitable for real-time applications, which require well-defined execution times, determinism, and custom control over the execution order. Here is a summary of some of these issues:
-
-    Complex and mixed scheduling semantics. Ideally you want well defined scheduling semantics to perform a formal timing analysis.
-
-    Callbacks may suffer from priority inversion. Higher priority callbacks may be blocked by lower priority callbacks.
-
-    No explicit control over the callbacks execution order.
-
-    No built-in control over triggering for specific topics.
-
-Additionally, the executor overhead in terms of CPU and memory usage is considerable. The Static Single-Threaded Executor reduces this overhead greatly but it might be not enough for some applications.
-
-These issues have been partially addressed by the following developments:
-
-    rclcpp WaitSet: The WaitSet class of rclcpp allows waiting directly on subscriptions, timers, service servers, action servers, etc. instead of using an Executor. It can be used to implement deterministic, user-defined processing sequences, possibly processing multiple messages from different subscriptions together. The examples_rclcpp_wait_set package provides several examples for the use of this user-level wait set mechanism.
-
-    rclc Executor: This Executor from the C Client Library rclc developed for micro-ROS gives the user fine-grained control over the execution order of callbacks and allows for custom trigger conditions to activate callbacks. Furthermore, it implements ideas of the Logical Execution Time
 
 
-# Normal nodes
+## Normal nodes
 
 In C++ a node is defined [here](https://github.com/ros2/rclcpp/blob/galactic/rclcpp/include/rclcpp/node.hpp) with macros-based definitions given [here](https://github.com/ros2/rclcpp/blob/1037822a63330495dcf0de5e8f20544375a5f116/rclcpp/include/rclcpp/macros.hpp).
 In ROS2 it is possible to compose several nodes in a single process [see here](https://docs.ros.org/en/galactic/Tutorials/Composition.html).
