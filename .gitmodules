@@ -4,3 +4,6 @@
 [submodule "00_demos"]
 	path = 00_demos
 	url = https://github.com/ros2/demos.git
+[submodule "00_examples"]
+	path = 00_examples
+	url = https://github.com/ros2/examples.git

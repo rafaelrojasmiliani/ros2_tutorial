@@ -10,6 +10,10 @@
     - **cmake**: generic cmake package intendet for general-purpose non-ros packages
     - **ament-cmake**: an example is [here](https://github.com/ros/ros_tutorials/tree/galactic-devel/turtlesim)
     - **ament-python**: package not based on cmake but in python setup-tools
+    - **Examples: Soimple**
+    ```BASH
+    ros2 pkg create --build-type ament_cmake simple_publisher --dependencies rclcpp std_msgs
+    ```
 
 # `colcon`
 Package creation in ROS 2 uses ament as its build system and colcon as its build tool.
@@ -27,4 +31,12 @@ So, sourcing your main ROS 2 installation’s setup and then the `dev_ws` overla
 - [ros2](https://github.com/ros2/ros2cli/blob/f93e41a6ce6b968d28e5f859e12eca24cca42665/ros2cli/setup.py#L61) definiton of ros2 command line script at insalltion level
 - [cli](https://github.com/ros2/ros2cli/blob/master/ros2cli/ros2cli/cli.py)
 - [ros2launch](https://github.com/ros2/launch_ros/tree/galactic/ros2launch) [here](https://github.com/ros2/launch_ros.git)
+
+# Package API
+
+[see here](https://answers.ros.org/question/288501/ros2-equivalent-of-rospackagegetpath/)
+- [`ament_index`](https://github.com/ament/ament_index/)
+
+# Colcon compilation
+
 
