@@ -32,6 +32,17 @@
     - [read](https://github.com/ros-controls/ros2_control/blob/6b495ef86889cbfdc1ee22ac77efa2ff589727ee/controller_manager/src/controller_manager.cpp#L1340), invoques a [`hardware_interface::ResoureceManager`](https://github.com/ros-controls/ros2_control/blob/6b495ef86889cbfdc1ee22ac77efa2ff589727ee/hardware_interface/include/hardware_interface/resource_manager.hpp#L37) method's [read](https://github.com/ros-controls/ros2_control/blob/6b495ef86889cbfdc1ee22ac77efa2ff589727ee/hardware_interface/src/resource_manager.cpp#L891). This method [loops](https://github.com/ros-controls/ros2_control/blob/6b495ef86889cbfdc1ee22ac77efa2ff589727ee/hardware_interface/src/resource_manager.cpp#L891) separatly through `hardware_interface::ResoureceManager::resource_storage_->{actuators_, sensors_, systems_}[i].read()`. Defitions of `actuators_`, `sensors_` and `systems_` is [here](https://github.com/ros-controls/ros2_control/blob/500233ac3d7f337881922ae7a96abd0a87b70dfa/hardware_interface/src/resource_manager.cpp#L171)
 
 
+## Controller interface
+
+- [`control interface`](https://github.com/ros-controls/ros2_control/blob/500233ac3d7f337881922ae7a96abd0a87b70dfa/controller_interface/include/controller_interface/controller_interface.hpp#L68)
+
+Specific contollers are in [`ros2_controllers`](https://github.com/ros-controls/ros2_controllers)
+
+### Forward controllers
+[documentation](https://github.com/ros-controls/ros2_controllers/blob/master/forward_command_controller/doc/userdoc.rst)
+
+Defined [here](https://github.com/ros-controls/ros2_controllers/blob/c51ba1e45ff3868f7d50b164e3ed8162db4440f1/forward_command_controller/include/forward_command_controller/forward_command_controller.hpp#L47) [defined here](https://github.com/ros-controls/ros2_controllers/blob/c51ba1e45ff3868f7d50b164e3ed8162db4440f1/forward_command_controller/src/forward_command_controller.cpp#L33).
+
 # ActuatorInterface
 
 Example [declared here](https://github.com/ros-controls/ros2_control_demos/blob/c9ab5c18e130742180d28009acbefa2f78f1a64e/ros2_control_demo_hardware/include/ros2_control_demo_hardware/rrbot_actuator.hpp#L36)  and [defined here](https://github.com/ros-controls/ros2_control_demos/blob/c9ab5c18e130742180d28009acbefa2f78f1a64e/ros2_control_demo_hardware/src/rrbot_actuator.cpp#L33)
@@ -88,3 +99,47 @@ Example [declared here](https://github.com/ros-controls/ros2_control_demos/blob/
 | `get_name ` | | |
 | `get_state` | | |
 | `set_state` | | |
+
+## Control Interface virtual funcions
+
+| Function |  input  |  output | function |
+| -------- | ---    | -------  | -------- |
+| `command_interface_configuration` | none | `InterfaceConfiguration` |  |
+| `state_interface_configuration` | none | `InterfaceConfiguration` | |
+| `on_init` | none | `LifecycleNodeInterface::CallbackReturn` | |
+| `update` | none | `controller_interface::return_type` | |
+
+
+## Control Interface protected instances
+
+| Instance/Varible | Description |
+| ---------------- | ----------- |
+|`std::vector<hardware_interface::LoanedCommandInterface> command_interfaces_;` ||
+|`std::vector<hardware_interface::LoanedStateInterface> state_interfaces_;` ||
+|`std::shared_ptr<rclcpp::Node> node_;` ||
+|`rclcpp_lifecycle::State lifecycle_state_;` ||
+|`unsigned int update_rate_ = 0;` ||
+
+## Control Forward control
+Implements the following instances
+
+Implements subscribers   [here](https://github.com/ros-controls/ros2_controllers/blob/c51ba1e45ff3868f7d50b164e3ed8162db4440f1/forward_command_controller/src/forward_command_controller.cpp#L80) which class `rt_command_ptr_.writeFromNonRT(recv_msg)`. 
+
+
+Then in `update` it calls ` rt_command_ptr_.readFromRT();`, then copies the values into `ControlInterface::command_interfaces_[i]`[here](https://github.com/ros-controls/ros2_controllers/blob/c51ba1e45ff3868f7d50b164e3ed8162db4440f1/forward_command_controller/src/forward_command_controller.cpp#L162)
+
+| Instance/Varible | Description |
+| ---------------- | ----------- |
+|`std::vector<std::string> joint_names_` | |
+|`std::string interface_name_` ||
+| `realtime_tools::RealtimeBuffer<std::shared_ptr<CmdType>> rt_command_ptr_` | |
+| `rclcpp::Subscription<CmdType>::SharedPtr joints_command_subscriber_` ||
+| `std::string logger_name_` ||
+
+| Function |  Description   |
+| -------- | ---    |
+| `command_interface_configuration` | [here](https://github.com/ros-controls/ros2_controllers/blob/c51ba1e45ff3868f7d50b164e3ed8162db4440f1/forward_command_controller/src/forward_command_controller.cpp#L89) |
+| `state_interface_configuration` | [here](https://github.com/ros-controls/ros2_controllers/blob/c51ba1e45ff3868f7d50b164e3ed8162db4440f1/forward_command_controller/src/forward_command_controller.cpp#L103) |
+| `on_init` | [here](https://github.com/ros-controls/ros2_controllers/blob/c51ba1e45ff3868f7d50b164e3ed8162db4440f1/forward_command_controller/src/forward_command_controller.cpp#L40) |
+| `update` | [here](https://github.com/ros-controls/ros2_controllers/blob/c51ba1e45ff3868f7d50b164e3ed8162db4440f1/forward_command_controller/src/forward_command_controller.cpp#L140) | 
+
