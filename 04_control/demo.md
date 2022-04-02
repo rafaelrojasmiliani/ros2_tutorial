@@ -42,3 +42,127 @@ The load controller message is [here](https://github.com/ros-controls/ros2_contr
 The control managere instantiates the load controller servics [here](https://github.com/ros-controls/ros2_control/blob/500233ac3d7f337881922ae7a96abd0a87b70dfa/controller_manager/src/controller_manager.cpp#L120) and bind it to [this method](https://github.com/ros-controls/ros2_control/blob/500233ac3d7f337881922ae7a96abd0a87b70dfa/controller_manager/src/controller_manager.cpp#L934) which at the end calls [load controller](https://github.com/ros-controls/ros2_control/blob/500233ac3d7f337881922ae7a96abd0a87b70dfa/controller_manager/src/controller_manager.cpp#L157) which calls [add controller impl](https://github.com/ros-controls/ros2_control/blob/500233ac3d7f337881922ae7a96abd0a87b70dfa/controller_manager/src/controller_manager.cpp#L611).
 
 The control manager uses [control spec](https://github.com/ros-controls/ros2_control/blob/500233ac3d7f337881922ae7a96abd0a87b70dfa/controller_manager/include/controller_manager/controller_spec.hpp#L36) to handle controller intrafes [here](https://github.com/ros-controls/ros2_control/blob/500233ac3d7f337881922ae7a96abd0a87b70dfa/controller_manager/include/controller_manager/controller_spec.hpp#L39).
+
+
+##  Modular Actuator
+
+1. declare argumetns with default value and description
+    - prefix
+    - slowdown
+    - `robot_controller`
+2. launch `rrbot_base.launch.py` with
+    - controller files `rrbot_modular_actuators.yaml`
+    - `description_file` as `rrbot_modular_actuators.urdf.xacro`
+    - forwards prefix, slowdown, `robot_controller`
+
+## `rrbot_base.launch.py`
+
+1. Declare arguments
+| Paramter | Default value |
+| ------- | -------------  |
+|`runtime_config_package` `ros2_control_demo_bringup` |
+| `controllers_file` | `rrbot_controllers.yaml` |
+| `description_package` | `rrbot_description` |
+| `description_file`  | No |
+| `prefix`  | `""` |
+| `use_sim` | `false` |
+| `use_fake_hardware` | `true` |
+| `fake_sensor_commands`  | `false` |
+| `slowdown` |  `3.0` |
+| `robot_controller` | `forward_position_controller` |
+| `start_rviz` | `true` |
+
+2. Load the contend to the description file
+```python
+
+    robot_description_content = Command(
+        [
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            PathJoinSubstitution(
+                [FindPackageShare(description_package), "urdf", description_file]
+            ),
+            "... ",
+            "prefix:=",prefix," ","use_sim:=",use_sim," ","use_fake_hardware:=",
+            use_fake_hardware," ","fake_sensor_commands:=",fake_sensor_commands,
+            " ","slowdown:=",slowdown,
+        ]
+    )
+    robot_description = {"robot_description": robot_description_content}
+```
+3. Load the content of the controller configuration
+```python
+    robot_controllers = PathJoinSubstitution(
+        [
+            FindPackageShare(runtime_config_package),
+            "config",
+            controllers_file,
+        ]
+    )
+```
+4.
+    control_node = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters=[robot_description, robot_controllers],
+        output={
+            "stdout": "screen",
+            "stderr": "screen",
+        },
+    )
+    robot_state_pub_node = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="both",
+        parameters=[robot_description],
+    )
+
+    rviz_config_file = PathJoinSubstitution(
+        [FindPackageShare(description_package), "config", "rrbot.rviz"]
+    )
+    rviz_node = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        output="log",
+        arguments=["-d", rviz_config_file],
+        condition=IfCondition(start_rviz),
+    )
+
+    joint_state_broadcaster_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+    )
+
+    robot_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[robot_controller, "-c", "/controller_manager"],
+    )
+
+    # Delay rviz start after `joint_state_broadcaster`
+    delay_rviz_after_joint_state_broadcaster_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster_spawner,
+            on_exit=[rviz_node],
+        )
+    )
+
+    # Delay start of robot_controller after `joint_state_broadcaster`
+    delay_robot_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster_spawner,
+            on_exit=[robot_controller_spawner],
+        )
+    )
+
+    nodes = [
+        control_node,
+        robot_state_pub_node,
+        joint_state_broadcaster_spawner,
+        delay_rviz_after_joint_state_broadcaster_spawner,
+        delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
+    ]
+
+    return LaunchDescription(declared_arguments + nodes)
