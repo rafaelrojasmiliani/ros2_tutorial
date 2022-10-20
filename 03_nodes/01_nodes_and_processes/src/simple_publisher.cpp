@@ -56,6 +56,10 @@ int main(int argc, char **argv) {
   setvbuf(stdout, NULL, _IONBF, BUFSIZ);
   rclcpp::init(argc, argv);
 
+  std::cout << " argc = " << argc;
+  for(int i=0;i< argc;i++)
+      printf("argument = %s", *(argv+i));
+
   rclcpp::executors::SingleThreadedExecutor executor;
   Talker::SharedPtr tal = std::make_shared<Talker>();
   Listener::SharedPtr lis = std::make_shared<Listener>();
