@@ -223,3 +223,51 @@ In addition, it prioritizes all timer events over the messages.
 The following flow diagram visualizes this scheduling semantics.
 
 This semantics was first described in a paper by Casini et al. at ECRTS 2019.
+
+# Options
+
+
+The `NodeOptions` [declared here]() [defined here]() is used in [`Node` constructor](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node.cpp#L97)
+- Pass an instance of ` rcl_node_options_t` to this [`NodeBase` constructor](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node_interfaces/node_base.cpp#L32) using `*(options.get_rcl_node_options()` [here](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node.cpp#L105)
+- Pass the boolean returned by [`NodeOptopms::use_intra_process_comms`] to this [`NodeBase` constructor](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node_interfaces/node_base.cpp#L32).
+- Contruct an instance of `rclcpp::node_interfaces::NodeParameters` [declared here](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/include/rclcpp/node_interfaces/node_parameters.hpp#L79) and [defined here](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node_interfaces/node_parameters.cpp) with [this constructor](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node_interfaces/node_parameters.cpp#L39) and the following option parameters
+    - `NodeOptions::parameter_overrides()`
+    - `NodeOptions::start_parameter_services()`
+    - `NodeOptions::start_parameter_event_publisher()`
+    - `NodeOptions::parameter_event_qos()`
+    - `NodeOptions::parameter_event_publisher_NodeOptions::)`
+    - `NodeOptions::allow_undeclared_parameters()`
+    - `NodeOptions::automatically_declare_parameters_from_overrides()`
+
+- `context`- `rclcpp::contexts::default_context::get_global_default_context()`
+- `arguments`- `{}`
+- `parameter_overrides`- `{}`  used to change the initial value of declared parameters within the node
+- `use_global_arguments`- `true`
+- `use_intra_process_comms`- `false`
+- `start_parameter_services`- `true`
+- `start_parameter_event_publisher`- `true`
+- `parameter_event_qos`- `rclcpp::ParameterEventQoS`
+- `with` history setting and depth from rmw_qos_profile_parameter_events
+- `parameter_event_publisher_options`- `rclcpp::PublisherOptionsBase`
+- `allow_undeclared_parameters`- `false`
+- `automatically_declare_parameters_from_overrides`- `false`
+- `allocator`- `rcl_get_default_allocator()`
+
+
+# Node Interfaces
+
+- [`Node::get_node_base_interface()`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node.cpp#L406) gets `rclcpp::node_interfaces::NodeBaseInterface` [declared here](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/include/rclcpp/node_interfaces/node_base_interface.hpp#L36).
+- [`Node::Node::get_node_clock_interface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node.cpp#L412) returns [`rclcpp::node_interfaces::NodeClockInterface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/include/rclcpp/node_interfaces/node_clock_interface.hpp#L29)
+- [`Node::Node::get_node_graph_interface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node.cpp#L418) returns a [`rclcpp::node_interfaces::NodeGraphInterface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/include/rclcpp/node_interfaces/node_graph_interface.hpp#L36)
+- [`Node::Node::get_node_logging_interface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node.cpp#L424) returns a [`rclcpp::node_interfaces::NodeLoggingInterface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/include/rclcpp/node_interfaces/node_logging_interface.hpp#L31)
+- [`Node::get_node_time_source_interface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node.cpp#L430) retunrs a [`rclcpp::node_interfaces::NodeTimeSourceInterface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/include/rclcpp/node_interfaces/node_time_source_interface.hpp#L29)
+- [`Node::get_node_timers_interface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node.cpp#L436) returns a [`rclcpp::node_interfaces::NodeTimersInterface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/include/rclcpp/node_interfaces/node_timers_interface.hpp#L29)
+- [`Node::get_node_topics_interface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node.cpp#L442) returns a [`rclcpp::node_interfaces::NodeTopicsInterface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/include/rclcpp/node_interfaces/node_topics_interface.hpp#L38)
+- [`Node::get_node_services_interface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node.cpp#L448) returns a [`rclcpp::node_interfaces::NodeServicesInterface`] (https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/include/rclcpp/node_interfaces/node_services_interface.hpp#L30)
+- [`Node::get_node_parameters_interface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node.cpp#L454) returns a [`rclcpp::node_interfaces::NodeParametersInterface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/include/rclcpp/node_interfaces/node_parameters_interface.hpp#L49). The default is [declared here](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/include/rclcpp/node_interfaces/node_parameters.hpp#L79) and [defned here](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node_interfaces/node_parameters.cpp#L39).
+- [`Node::get_node_waitables_interface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node.cpp#L460) returns a [`rclcpp::node_interfaces::NodeWaitablesInterface`](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/include/rclcpp/node_interfaces/node_waitables_interface.hpp#L29)
+
+## Node Parameters interface
+Its default constructor on the `Node` is [called here](https://github.com/ros2/rclcpp/blob/fdaf96f2171e70f3e013610aa44df2d7e9c866a3/rclcpp/src/rclcpp/node.cpp#L119).
+
+Parameter overrides is filled [here](https://github.com/ros2/rclcpp/blob/4fa3489cfd075affb34812878b034ef8a462e379/rclcpp/src/rclcpp/node_interfaces/node_parameters.cpp#L98)
